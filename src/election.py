@@ -9,15 +9,15 @@ class Election:
         self.result = result
         self.__drop_other_parties()
         self.number_of_parties = len(self.result)
-        self.total_seats = config['TOTAL_SEATS']
+        self.total_seats = config['total_seats']
         self.__enforce_five_percent_hurdle()
 
     def __drop_other_parties(self):
         self.result = self.result[:-1]
 
     def __enforce_five_percent_hurdle(self):
-        threshold_idx = self.result < config['THRESHOLD_HURDLE']
-        self.result[threshold_idx] = 0
+        threshold_hurdle = self.result < config['threshold_hurdle']
+        self.result[threshold_hurdle] = 0
 
     def calc_seats(self):
         # Sainte-Laguë procedure

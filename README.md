@@ -1,4 +1,4 @@
-# Koalitionsverhandlungen project
+# Koala project
 
 ### Objectives:
 
