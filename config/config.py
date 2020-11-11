@@ -1,5 +1,6 @@
 import yaml
 
-with open('./config/config.yml') as file:
-    config = yaml.load(file)
+with open('../config/config.yml') as file:
+    config = yaml.safe_load(file)
+
 
