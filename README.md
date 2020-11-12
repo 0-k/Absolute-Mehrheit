@@ -2,7 +2,7 @@
 
 ### Objectives:
 
-* learn error and drift of polls
+* learn drift rates of polls
 * Create Monte-Carlo samples of party results  
 * Deliver coalition forecast for German 2021 election
 * Deliver 5% hurdle forecast 
