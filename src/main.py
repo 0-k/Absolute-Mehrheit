@@ -2,30 +2,26 @@ import matplotlib.pyplot as plt
 from src.party import Party
 from src.simulation import Simulation
 
+union = Party(name='UNION', percentage=0.35, uncertainty=0.02, drift=0.03)
+spd = Party(name='SPD', percentage=0.15, uncertainty=0.02, drift=0.03)
+gruene = Party(name='GRUENE', percentage=0.18, uncertainty=0.02, drift=0.03)
+fdp = Party(name='FDP', percentage=0.06, uncertainty=0.01, drift=0.02)
+linke = Party(name='LINKE', percentage=0.09, uncertainty=0.01, drift=0.02)
+afd = Party(name='AFD', percentage=0.11, uncertainty=0.02, drift=0.02)
+other = Party(name='OTHER', percentage=0.06, uncertainty=0.01, drift=0.01)
+election_outcomes = [union, spd, gruene, fdp, linke, afd, other]
 
-if __name__ == '__main__':
-    '''**  Try again. Fail again. Fail better. **'''
 
-    union = Party(name='UNION', percentage=0.35, uncertainty=0.02, drift=0.03)
-    spd = Party(name='SPD', percentage=0.15, uncertainty=0.02, drift=0.03)
-    gruene = Party(name='GRUENE', percentage=0.18, uncertainty=0.02, drift=0.03)
-    fdp = Party(name='FDP', percentage=0.06, uncertainty=0.01, drift=0.02)
-    linke = Party(name='LINKE', percentage=0.09, uncertainty=0.01, drift=0.02)
-    afd = Party(name='AFD', percentage=0.11, uncertainty=0.02, drift=0.02)
-    other = Party(name='OTHER', percentage=0.06, uncertainty=0.01, drift=0.01)
-    election_outcomes = [union, spd, gruene, fdp, linke, afd, other]
-
-    simulation = Simulation(election_outcomes)
-
+def plot_coalitions(simulation):
     black_green = [union, gruene]
     black_red = [union, spd]
     green_red_red = [gruene, spd, linke]
     black_yellow = [union, fdp]
 
-    black_green_result = simulation.evaluate_coalition(black_green)
-    black_red_result = simulation.evaluate_coalition(black_red)
-    green_red_red_result = simulation.evaluate_coalition(green_red_red)
-    black_yellow_result = simulation.evaluate_coalition(black_yellow)
+    black_green_result = simulation.evaluate_seats_coalition(black_green)
+    black_red_result = simulation.evaluate_seats_coalition(black_red)
+    green_red_red_result = simulation.evaluate_seats_coalition(green_red_red)
+    black_yellow_result = simulation.evaluate_seats_coalition(black_yellow)
 
     fig, axs = plt.subplots(2, 2)
     axs[0, 0].hist(black_green_result, bins=50, color='black')
@@ -48,4 +44,16 @@ if __name__ == '__main__':
     axs[1, 0].axvline(300, color='red', linestyle='--')
     axs[1, 1].axvline(300, color='red', linestyle='--')
     plt.show()
+
+
+def five_percent_hurdle(simulation):
+    hurdle = simulation.evaluate_probability_hurdle_surpassing(fdp)
+    print('Abouve 5 percent: ' + str(hurdle))
+
+if __name__ == '__main__':
+    '''**  Try again. Fail again. Fail better. **'''
+
+    sim = Simulation(election_outcomes)
+    five_percent_hurdle(sim)
+    plot_coalitions(sim)
 
