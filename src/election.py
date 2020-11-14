@@ -27,9 +27,8 @@ class Election:
         return seats
 
     def __calc_sainte_lague_quotients(self):
-        sainte_lague_quotients = np.zeros((self.total_seats, self.number_of_parties))
-        for idx in range(self.total_seats):
-            sainte_lague_quotients[idx] = self.result / (idx + 0.5)
+        divisors = np.arange(0.5, self.total_seats)
+        sainte_lague_quotients = self.result / np.vstack(divisors)
         return sainte_lague_quotients
 
     def __count_number_of_highest(self, quotients: np.array):
