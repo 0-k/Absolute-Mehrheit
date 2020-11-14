@@ -26,12 +26,13 @@ class Simulation:
         samples /= total_result
         self.samples = samples
 
-    def evaluate_coalition(self):
+    def evaluate_coalition(self, coalition):
         coalition_seats = np.zeros(self.sample_size)
         for idx in range(self.sample_size):
             election_result = self.samples.T[idx]
             election = Election(election_result, drop_other_parties=self.drop_other_parties)
             seats_by_party = election.calc_seats_by_party()
-            coalition_seats[idx] = seats_by_party[0] + seats_by_party[2]
+            for party in coalition:
+                coalition_seats[idx] += seats_by_party[party.idx]
         return coalition_seats
 

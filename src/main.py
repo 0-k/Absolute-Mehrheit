@@ -16,7 +16,36 @@ if __name__ == '__main__':
     election_outcomes = [union, spd, gruene, fdp, linke, afd, other]
 
     simulation = Simulation(election_outcomes)
-    black_green = simulation.evaluate_coalition()
 
-    plt.hist(black_green, bins=20)
+    black_green = [union, gruene]
+    black_red = [union, spd]
+    green_red_red = [gruene, spd, linke]
+    black_yellow = [union, fdp]
+
+    black_green_result = simulation.evaluate_coalition(black_green)
+    black_red_result = simulation.evaluate_coalition(black_red)
+    green_red_red_result = simulation.evaluate_coalition(green_red_red)
+    black_yellow_result = simulation.evaluate_coalition(black_yellow)
+
+    fig, axs = plt.subplots(2, 2)
+    axs[0, 0].hist(black_green_result, bins=50, color='black')
+    axs[0, 0].set_xlim(150, 450)
+    axs[0, 0].set_title('Black Green')
+    axs[0, 1].hist(black_red_result, bins=50, color='black')
+    axs[0, 1].set_title('Black Red')
+    axs[1, 0].hist(green_red_red_result, bins=50, color='black')
+    axs[1, 0].set_title('Green Red Red')
+    axs[1, 1].hist(black_yellow_result, bins=50, color='black')
+    axs[1, 1].set_title('Black Yellow')
+
+    axs[0, 0].set_xlim(150, 450)
+    axs[0, 1].set_xlim(150, 450)
+    axs[1, 0].set_xlim(150, 450)
+    axs[1, 1].set_xlim(150, 450)
+
+    axs[0, 0].axvline(300, color='red', linestyle='--')
+    axs[0, 1].axvline(300, color='red', linestyle='--')
+    axs[1, 0].axvline(300, color='red', linestyle='--')
+    axs[1, 1].axvline(300, color='red', linestyle='--')
     plt.show()
+
