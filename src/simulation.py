@@ -22,6 +22,7 @@ class Simulation:
             party = self.parties[idx]
             total_error = math.sqrt(party.uncertainty**2 + party.drift**2)
             samples[idx] = np.random.normal(party.percentage, total_error, self.sample_size)
+        samples[samples < 0] = 0
         total_result = samples.sum(axis=0)
         samples /= total_result
         self.samples = samples
