@@ -1,5 +1,7 @@
 # Koala project
 
+![Election Simulation Example](example.png)
+
 ### Objectives:
 
 * learn drift rates of polls
@@ -19,3 +21,4 @@ Polls:
 * INSA
 * Kantar
 * Yougov
+
