@@ -1,9 +1,7 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 from data.data import data
-#print(data)
 
 class DriftModel:
 
@@ -27,16 +25,20 @@ class DriftModel:
 class PollModel:
 
     def __init__(self):
-        self.date_to = pd.Timestamp('2020-11-03')
+        self.date_to = pd.Timestamp('2020-11-18')
         self.window = pd.Timedelta(8, 'W').round('d')
         self.date_from = (self.date_to - self.window).date()
         self.date_range = pd.date_range(self.date_from, self.date_to)
 
-    def filter_data(self):
-        data_filtered = data.loc[self.date_from:self.date_to]
-        return data_filtered
+    def calc_current_average(self):
+        decay = self.__calc_decay()
+        data_filtered = data.loc[self.date_from:self.date_to].drop(['Institute', 'Total'], axis=1)
+        decay = pd.concat([data_filtered, decay], axis=1, join='inner').decay
+        data_scaled = data_filtered/sum(decay)
+        data_convoluted = data_scaled.mul(decay, axis=0)
+        return np.sum(data_convoluted)/100
 
-    def calc_decay(self):
+    def __calc_decay(self):
         decay = []
         decay_parameter = 1 + 0.105
         for idx in range(len(self.date_range)):
@@ -44,22 +46,12 @@ class PollModel:
         decay = pd.DataFrame(decay, index=self.date_range[::-1], columns=['decay'])
         return decay
 
-    def join(self):
-        decay = self.calc_decay()
-        data_filtered = self.filter_data()
-        result = pd.concat([data_filtered, decay], axis=1, join='inner')
-        print(sum(result.decay))
-        #divide all data_filtered by sum
-        #multiply all rows by decay value
-        #take sum of all columns
-
 
 if __name__ == '__main__':
     drift_model = DriftModel()
     poll_model = PollModel()
-    #poll_model.filter_data()
-    poll_model.join()
+    print(drift_model.calc_drift('Union'))
+    print(poll_model.calc_current_average())
 
-    #print(model.calc_drift('Union'))
 
 
