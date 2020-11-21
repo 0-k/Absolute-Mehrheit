@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from src.party import Party
 from src.simulation import Simulation
 
@@ -25,7 +26,6 @@ def plot_coalitions(simulation):
 
     fig, axs = plt.subplots(2, 2)
     axs[0, 0].hist(black_green_result, bins=50, color='black')
-    axs[0, 0].set_xlim(150, 450)
     axs[0, 0].set_title('Black Green')
     axs[0, 1].hist(black_red_result, bins=50, color='black')
     axs[0, 1].set_title('Black Red')
@@ -34,10 +34,10 @@ def plot_coalitions(simulation):
     axs[1, 1].hist(black_yellow_result, bins=50, color='black')
     axs[1, 1].set_title('Black Yellow')
 
-    axs[0, 0].set_xlim(150, 450)
-    axs[0, 1].set_xlim(150, 450)
-    axs[1, 0].set_xlim(150, 450)
-    axs[1, 1].set_xlim(150, 450)
+    axs[0, 0].set_xlim(151, 450)
+    axs[0, 1].set_xlim(151, 450)
+    axs[1, 0].set_xlim(151, 450)
+    axs[1, 1].set_xlim(151, 450)
 
     axs[0, 0].axvline(300, color='red', linestyle='--')
     axs[0, 1].axvline(300, color='red', linestyle='--')
