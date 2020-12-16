@@ -1,8 +1,8 @@
 import numpy as np
 import math
 
-from src.election import Election
-from src.party import Party
+from election import Election
+from party import Party
 from config.config import config
 
 

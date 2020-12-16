@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
-import numpy as np
-from src.party import Party
-from src.simulation import Simulation
+from party import Party
+from simulation import Simulation
 
 union = Party(name='UNION', percentage=0.354, uncertainty=0.025, drift=0.02)
 spd = Party(name='SPD', percentage=0.1538, uncertainty=0.019, drift=0.0163)
@@ -25,13 +24,13 @@ def plot_coalitions(simulation):
     black_yellow_result = simulation.evaluate_seats_coalition(black_yellow)
 
     fig, axs = plt.subplots(2, 2)
-    axs[0, 0].hist(black_green_result, bins=50, color='black')
+    axs[0, 0].hist(black_green_result, bins=10, color='black')
     axs[0, 0].set_title('Black Green')
-    axs[0, 1].hist(black_red_result, bins=50, color='black')
+    axs[0, 1].hist(black_red_result, bins=10, color='black')
     axs[0, 1].set_title('Black Red')
-    axs[1, 0].hist(green_red_red_result, bins=50, color='black')
+    axs[1, 0].hist(green_red_red_result, bins=10, color='black')
     axs[1, 0].set_title('Green Red Red')
-    axs[1, 1].hist(black_yellow_result, bins=50, color='black')
+    axs[1, 1].hist(black_yellow_result, bins=10, color='black')
     axs[1, 1].set_title('Black Yellow')
 
     axs[0, 0].set_xlim(151, 450)
