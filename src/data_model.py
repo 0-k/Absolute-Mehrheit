@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from data.data import data
+from data.data import historic_poll_data
 
 
 class DriftModel:
@@ -12,7 +12,7 @@ class DriftModel:
         self.date_range = pd.date_range(self.date_from, self.date_to)
 
     def calc_drift(self, party):
-        data_by_party = data[party]
+        data_by_party = historic_poll_data[party]
         drift = []
         for day in self.date_range:
             drift_by_day = np.std(data_by_party.loc[day:(day+self.window).date()])
@@ -32,7 +32,7 @@ class PollModel:
 
     def calc_current_average(self):
         decay = self.__calc_decay()
-        data_filtered = data.loc[self.date_from:self.date_to].drop(['Institute', 'Total'], axis=1)
+        data_filtered = historic_poll_data.loc[self.date_from:self.date_to].drop(['Institute', 'Total'], axis=1)
         decay = pd.concat([data_filtered, decay], axis=1, join='inner').decay
         data_scaled = data_filtered/sum(decay)
         data_convoluted = data_scaled.mul(decay, axis=0)

@@ -142,3 +142,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+
+# Project
+
+data/polls_cashed.html
