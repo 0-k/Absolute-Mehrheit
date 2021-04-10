@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 counter = count()
 
 
-@dataclass(frozen=True)
+@dataclass
 class Party:
     name: str
     id: str
