@@ -3,6 +3,7 @@ import math
 
 from election import Election
 from party import Party
+from coalition import Coalition
 from config.config import config
 
 
@@ -27,13 +28,14 @@ class Simulation:
         samples /= total_result
         self.samples = samples
 
-    def evaluate_seats_coalition(self, coalition):
+    def evaluate_seats_coalition(self, coalition: Coalition):
         coalition_seats = np.zeros(self.sample_size)
         for idx in range(self.sample_size):
             election_result = self.samples.T[idx]
             election = Election(election_result, drop_other_parties=self.drop_other_parties)
             seats_by_party = election.calc_seats_by_party()
-            for party in coalition:
+            for party in coalition.parties:
+                print(party)
                 coalition_seats[idx] += seats_by_party[party.idx]
         return coalition_seats
 
