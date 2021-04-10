@@ -35,7 +35,6 @@ class Simulation:
             election = Election(election_result, drop_other_parties=self.drop_other_parties)
             seats_by_party = election.calc_seats_by_party()
             for party in coalition.parties:
-                print(party)
                 coalition_seats[idx] += seats_by_party[party.idx]
         return coalition_seats
 

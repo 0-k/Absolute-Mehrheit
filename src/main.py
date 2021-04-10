@@ -1,25 +1,19 @@
 from simulation import Simulation
 import party
-import src.coalition as coalition
+import coalition
 import matplotlib.pyplot as plt
 
 
 def plot_coalitions(simulation):
-    black_green_result = simulation.evaluate_seats_coalition(coalition.BLACK_RED)
-
-    #black_red_result = simulation.evaluate_seats_coalition(black_red)
-    #green_red_red_result = simulation.evaluate_seats_coalition(green_red_red)
-    #black_yellow_result = simulation.evaluate_seats_coalition(black_yellow)
+    black_green_result = simulation.evaluate_seats_coalition(coalition.BLACK_GREEN)
+    black_red_result = simulation.evaluate_seats_coalition(coalition.BLACK_RED)
+    green_red_red_result = simulation.evaluate_seats_coalition(coalition.GREEN_RED_RED)
+    black_yellow_result = simulation.evaluate_seats_coalition(coalition.BLACK_YELLOW)
 
     fig, axs = plt.subplots(2, 2)
     axs[0, 0].hist(black_green_result, bins=10, color='black')
     axs[0, 0].set_title('Black Green')
 
-    axs[0, 0].set_xlim(151, 450)
-    axs[0, 0].axvline(300, color='red', linestyle='--')
-
-
-    """
     axs[0, 1].hist(black_red_result, bins=10, color='black')
     axs[0, 1].set_title('Black Red')
     axs[1, 0].hist(green_red_red_result, bins=10, color='black')
@@ -27,14 +21,16 @@ def plot_coalitions(simulation):
     axs[1, 1].hist(black_yellow_result, bins=10, color='black')
     axs[1, 1].set_title('Black Yellow')
 
+    axs[0, 0].set_xlim(151, 450)
     axs[0, 1].set_xlim(151, 450)
     axs[1, 0].set_xlim(151, 450)
     axs[1, 1].set_xlim(151, 450)
 
+    axs[0, 0].axvline(300, color='red', linestyle='--')
     axs[0, 1].axvline(300, color='red', linestyle='--')
     axs[1, 0].axvline(300, color='red', linestyle='--')
     axs[1, 1].axvline(300, color='red', linestyle='--')
-    """
+
     plt.show()
 
 
