@@ -2,13 +2,13 @@ import matplotlib.pyplot as plt
 from party import Party
 from simulation import Simulation
 
-union = Party(name='UNION', percentage=0.354, uncertainty=0.025, drift=0.02)
-spd = Party(name='SPD', percentage=0.1538, uncertainty=0.019, drift=0.0163)
-gruene = Party(name='GRUENE', percentage=0.1851, uncertainty=0.02, drift=0.0166)
-fdp = Party(name='FDP', percentage=0.0638, uncertainty=0.01, drift=0.00897)
-linke = Party(name='LINKE', percentage=0.0797, uncertainty=0.013, drift=0.00842)
-afd = Party(name='AFD', percentage=0.102, uncertainty=0.016, drift=0.0156)
-other = Party(name='OTHER', percentage=0.0612, uncertainty=0.01, drift=0.0098)
+union = Party(name='UNION', id='cdu', percentage=0.354, uncertainty=0.025, drift=0.02)
+spd = Party(name='SPD', id='cdu', percentage=0.1538, uncertainty=0.019, drift=0.0163)
+gruene = Party(name='GRUENE', id='cdu', percentage=0.1851, uncertainty=0.02, drift=0.0166)
+fdp = Party(name='FDP', id='cdu', percentage=0.0638, uncertainty=0.01, drift=0.00897)
+linke = Party(name='LINKE', id='cdu', percentage=0.0797, uncertainty=0.013, drift=0.00842)
+afd = Party(name='AFD', id='cdu', percentage=0.102, uncertainty=0.016, drift=0.0156)
+other = Party(name='OTHER', id='cdu', percentage=0.0612, uncertainty=0.01, drift=0.0098)
 election_outcomes = [union, spd, gruene, fdp, linke, afd, other]
 
 

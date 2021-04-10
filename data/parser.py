@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from config.config import config
-from type import PartyName
+from src.party import Party
 
 
 class Parser:
@@ -24,11 +24,12 @@ class Parser:
     def get_latest_polls_of(self, party):
         if self.soup is None:
             self.__make_soup()
-        return self.soup.find(id=party.value['id']).find_all("td")
+        return self.soup.find(id=party.id).find_all("td")
 
 
 if __name__ == '__main__':
     parser = Parser()
-    percentages = parser.get_latest_polls_of(PartyName.CDU)
-    for percentage in percentages:
-        print(percentage.text)
+    union = Party(name='UNION', id='cdu')
+    percentages = parser.get_latest_polls_of(union)
+    for percentage in percentages[1:9]:
+        print(float(percentage.text.split(' ')[0].replace(',', '.')))

@@ -1,12 +1,14 @@
 from itertools import count
+from dataclasses import dataclass, field
+
+counter = count()
 
 
+@dataclass(frozen=True)
 class Party:
-    _idxs = count(0)
-
-    def __init__(self, name: str, percentage: float, uncertainty: float, drift: float = 0., idx: int = 0):
-        self.name = name
-        self.percentage = percentage
-        self.uncertainty = uncertainty
-        self.drift = drift
-        self.idx = next(self._idxs)
+    name: str
+    id: str
+    percentage: float = 0.0
+    uncertainty: float = 0.0
+    drift: float = 0.0
+    idx: int = field(default_factory=lambda: next(counter))
