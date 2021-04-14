@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from config.config import config
-from src.party import Party
+from src.parties import Party
 
 
 class Parser:

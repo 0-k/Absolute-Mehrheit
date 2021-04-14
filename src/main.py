@@ -1,42 +1,28 @@
-from simulation import Simulation
-import party
-import coalition
 import matplotlib.pyplot as plt
+import math
+
+from simulation import Simulation
+import parties
+import coalitions
 
 
 def plot_coalitions(simulation):
-    black_green_result = simulation.evaluate_seats_coalition(coalition.BLACK_GREEN)
-    black_red_result = simulation.evaluate_seats_coalition(coalition.BLACK_RED)
-    green_red_red_result = simulation.evaluate_seats_coalition(coalition.GREEN_RED_RED)
-    black_yellow_result = simulation.evaluate_seats_coalition(coalition.BLACK_YELLOW)
-
-    fig, axs = plt.subplots(2, 2)
-    axs[0, 0].hist(black_green_result, bins=10, color='black')
-    axs[0, 0].set_title('Black Green')
-
-    axs[0, 1].hist(black_red_result, bins=10, color='black')
-    axs[0, 1].set_title('Black Red')
-    axs[1, 0].hist(green_red_red_result, bins=10, color='black')
-    axs[1, 0].set_title('Green Red Red')
-    axs[1, 1].hist(black_yellow_result, bins=10, color='black')
-    axs[1, 1].set_title('Black Yellow')
-
-    axs[0, 0].set_xlim(151, 450)
-    axs[0, 1].set_xlim(151, 450)
-    axs[1, 0].set_xlim(151, 450)
-    axs[1, 1].set_xlim(151, 450)
-
-    axs[0, 0].axvline(300, color='red', linestyle='--')
-    axs[0, 1].axvline(300, color='red', linestyle='--')
-    axs[1, 0].axvline(300, color='red', linestyle='--')
-    axs[1, 1].axvline(300, color='red', linestyle='--')
-
+    rows = 2
+    columns = int(math.ceil(len(coalitions.ALL) / rows))
+    fig, axs = plt.subplots(rows, columns)
+    idx = 0
+    for coalition in coalitions.ALL:
+        seats_by_coalition = simulation.evaluate_seats_by(coalition)
+        plot_idx = idx // columns, idx % columns
+        axs[plot_idx].hist(seats_by_coalition, bins=10, color='black')
+        axs[plot_idx].set_title(coalition.name)
+        axs[plot_idx].set_xlim(151, 450)
+        axs[plot_idx].axvline(300, color='red', linestyle='--')
+        idx += 1
     plt.show()
 
 
 if __name__ == '__main__':
-    '''**  Try again. Fail again. Fail better. **'''
-
-    sim = Simulation(party.ALL)
+    sim = Simulation(parties.ALL)
     plot_coalitions(sim)
 

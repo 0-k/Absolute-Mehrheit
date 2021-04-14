@@ -1,4 +1,5 @@
 total_seats: 598
 threshold_hurdle: 0.05
-sample_size: 1000
+sample_size: 100
 poll_url: 'https://www.wahlrecht.de/umfragen/index.htm'
+
