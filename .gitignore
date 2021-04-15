@@ -146,4 +146,4 @@ cython_debug/
 
 # Project
 
-data/polls_cashed.html
+data/polls_cached.html
