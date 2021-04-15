@@ -7,7 +7,6 @@ from config.config import config
 import src.parties as parties
 
 
-
 class Parser:
 
     def __init__(self):
@@ -37,24 +36,25 @@ class Parser:
         return not os.path.exists(config['caching_filename'])
 
     def __make_request(self):
-        print('making request')
         r = requests.get(config['poll_url'])
         file = open(config['caching_filename'], "w")
         file.write(r.text)
         file.close()
 
     def __make_soup(self):
-        print('making soup')
         with open(config['caching_filename']) as fp:
             self.soup = BeautifulSoup(fp, 'html.parser')
 
     def get_latest_percentages_of(self, party):
-        soup = self.soup.find(id=party.id).find_all("td")[1:9]
+        soup = self.__filter_soup(party.id)
         percentages = [float(item.text.split(' ')[0].replace(',', '.')) for item in soup]
         return percentages
 
+    def __filter_soup(self, id):
+        return self.soup.find(id=id).find_all("td")[1:9]
+
     def get_latest_dates_of_polls(self):
-        soup = self.soup.find(id='datum').find_all("td")[1:9]
+        soup = self.__filter_soup('datum')
         dates = [dt.datetime.strptime(item.text, '%d.%m.%Y').date() for item in soup]
         return dates
 
@@ -62,4 +62,6 @@ class Parser:
 if __name__ == '__main__':
     parser = Parser()
     percentages = parser.get_latest_percentages_of(parties.GRUENE)
+    print(percentages)
     dates = parser.get_latest_dates_of_polls()
+    print(dates)

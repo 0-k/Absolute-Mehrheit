@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-from data.data import historic_poll_data
+
+from data.historic_poll_data import historic_poll_data
 
 
 class DriftModel:
