@@ -1,41 +1,40 @@
 import pandas as pd
 import numpy as np
 
+from parties import Party, UNION
+from config.config import config
 from dat.historic_poll_data import historic_poll_data
 
 
 class DriftModel:
 
     def __init__(self):
-        self.date_from = pd.Timestamp('2013-01-01')
-        self.date_to = pd.Timestamp('2020-11-15')
-        self.window = pd.Timedelta(40, 'W').round('d')
-        self.date_range = pd.date_range(self.date_from, self.date_to)
         self.data = historic_poll_data
+        self.window = pd.Timedelta(200, 'days').round('d')
+        self.__date_from = pd.Timestamp('2013-01-01')
+        self.__date_to = pd.Timestamp('2020-11-15')
+        self.__date_range = pd.date_range(self.__date_from, self.__date_to)
 
-    def calc_drift(self, party):
-        data_by_party = self.data[party]
-        drift = []
-        for day in self.date_range:
-            drift_by_day = np.std(data_by_party.loc[day:(day+self.window).date()])
-            drift.append(drift_by_day)
+    def calc_drift(self, party: Party):
+        data_by_party = self.data[party.name]
+        drift = [np.std(data_by_party.loc[day:(day+self.window).date()]) for day in self.__date_range]
         drift = np.array(drift)
         drift = drift[~np.isnan(drift)]
-        return np.mean(drift)
+        return np.mean(drift)/100
 
 
 class PollModel:
 
     def __init__(self):
-        self.__date_to = None
+        self.data = historic_poll_data
         self.__date_from = None
+        self.__date_to = None
         self.__date_range = None
         self.update_dates()
-        self.data = historic_poll_data
 
-    def update_dates(self, date_to=pd.Timestamp('2021-04-17')):
+    def update_dates(self, date_to=pd.Timestamp('2020-11-01')):
         self.__date_to = date_to
-        window = pd.Timedelta(8, 'W').round('d')
+        window = pd.Timedelta(50, 'days').round('d')
         self.__date_from = (self.__date_to - window).date()
         self.__date_range = pd.date_range(self.__date_from, self.__date_to)
 
@@ -48,10 +47,8 @@ class PollModel:
         return np.sum(data_convoluted)/100
 
     def __calc_decay(self):
-        decay = []
-        decay_parameter = 1 + 0.3
-        for idx in range(len(self.__date_range)):
-            decay.append((1/decay_parameter)**idx)
+        decay_parameter = config['decay_parameter']
+        decay = [(1/decay_parameter)**idx for idx in range(len(self.__date_range))]
         decay = pd.DataFrame(decay, index=self.__date_range[::-1], columns=['decay'])
         return decay
 
@@ -71,7 +68,7 @@ class PollModel:
 if __name__ == '__main__':
     drift_model = DriftModel()
     poll_model = PollModel()
-    print(drift_model.calc_drift('UNION'))
+    print(drift_model.calc_drift(UNION))
     print(poll_model.calc_current_average())
 
 
