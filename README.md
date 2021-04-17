@@ -1,4 +1,4 @@
-# Koala project
+# Absolute Mehrheit
 
 ![Election Simulation Example](example.png)
 
