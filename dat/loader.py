@@ -7,7 +7,7 @@ from config.config import config
 import src.parties as parties
 
 
-class Parser:
+class Loader:
 
     def __init__(self):
         self.soup = None
@@ -60,8 +60,6 @@ class Parser:
 
 
 if __name__ == '__main__':
-    parser = Parser()
+    parser = Loader()
     percentages = parser.get_latest_percentages_of(parties.GRUENE)
-    print(percentages)
     dates = parser.get_latest_dates_of_polls()
-    print(dates)
