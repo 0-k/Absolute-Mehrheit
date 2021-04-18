@@ -50,12 +50,15 @@ class PollModel:
         decay_parameter = config['decay_parameter']
         decay = [(1/decay_parameter)**idx for idx in range(len(self.__date_range))]
         decay = pd.DataFrame(decay, index=self.__date_range[::-1], columns=['decay'])
+        decay.index = pd.to_datetime(decay.index)
         return decay
 
     def __filter(self):
         data_filtered = self.values
+        data_filtered.index  = pd.to_datetime(data_filtered.index)
+        data_filtered = data_filtered.resample('d', axis=0).mean()
         try:
-            data_filtered = self.values.loc[self.__date_from:self.__date_to]
+            data_filtered = data_filtered.loc[self.__date_from:self.__date_to]
         except KeyError:
             pass
         try:

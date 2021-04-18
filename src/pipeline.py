@@ -27,6 +27,7 @@ def __as_df(polls_by_party, dates):
 def aggregate(polls):
     poll_aggregation = PollModel()
     poll_aggregation.values = polls
+    print()
     poll_aggregation.update_dates(pd.Timestamp(date.today()))
     return poll_aggregation.calc_current_average()
 
@@ -83,8 +84,9 @@ if __name__ == '__main__':
     correlation = calc_coalition_correlation(seats_by_coalition)
     hurdles_surpassing_probability = evaluate_probability_hurdle_surpassing()
 
-    plotting.plot_coalitions(seats_by_coalition)
-    plotting.plot_correlation(correlation)
+    print(has_majority)
+    #plotting.plot_coalitions(seats_by_coalition)
+    #plotting.plot_correlation(correlation)
     print(hurdles_surpassing_probability)
 
     #evaluate_coalition_without()
