@@ -12,6 +12,13 @@ class Coalition:
     parties: [parties.Party]
     idx: int = field(default_factory=lambda: next(counter))
 
+    def __contains__(self, party: parties.Party):
+        if party in self.parties:
+            return True
+        else:
+            return False
+
+
 
 BLACK_GREEN = Coalition('BLACK_GREEN', [parties.UNION, parties.GRUENE])
 BLACK_RED = Coalition('BLACK_RED', [parties.UNION, parties.SPD])
