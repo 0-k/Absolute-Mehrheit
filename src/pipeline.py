@@ -27,7 +27,6 @@ def __as_df(polls_by_party, dates):
 def aggregate(polls):
     poll_aggregation = PollModel()
     poll_aggregation.values = polls
-    print()
     poll_aggregation.update_dates(pd.Timestamp(date.today()))
     return poll_aggregation.calc_current_average()
 
@@ -69,7 +68,7 @@ def evaluate_probability_hurdle_surpassing():
 def evaluate_if_majority(seats_by):
     majority = dict()
     for coalition in seats_by:
-        majority[coalition] = [-1. if item < 300 else 1. for item in seats_by[coalition]]
+        majority[coalition] = [0 if item < config['majority'] else 1 for item in seats_by[coalition]]
     return majority
 
 

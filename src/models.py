@@ -65,7 +65,7 @@ class PollModel:
             data_filtered = data_filtered.drop(['Institute', 'Total'], axis=1)
         except KeyError:
             pass
-        return data_filtered
+        return data_filtered.dropna()
 
 
 if __name__ == '__main__':
