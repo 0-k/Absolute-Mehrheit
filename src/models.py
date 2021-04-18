@@ -8,15 +8,15 @@ from dat.historic_poll_data import historic_poll_data
 
 class DriftModel:
 
-    def __init__(self):
-        self.data = historic_poll_data
-        self.window = pd.Timedelta(200, 'days').round('d')
+    def __init__(self, window: int = 200):
+        self.values = historic_poll_data
+        self.window = pd.Timedelta(window, 'days').round('d')
         self.__date_from = pd.Timestamp('2013-01-01')
         self.__date_to = pd.Timestamp('2020-11-15')
         self.__date_range = pd.date_range(self.__date_from, self.__date_to)
 
     def calc_drift(self, party: Party):
-        data_by_party = self.data[party.name]
+        data_by_party = self.values[party.name]
         drift = [np.std(data_by_party.loc[day:(day+self.window).date()]) for day in self.__date_range]
         drift = np.array(drift)
         drift = drift[~np.isnan(drift)]
@@ -26,7 +26,7 @@ class DriftModel:
 class PollModel:
 
     def __init__(self):
-        self.data = historic_poll_data
+        self.values = historic_poll_data
         self.__date_from = None
         self.__date_to = None
         self.__date_range = None
@@ -53,9 +53,9 @@ class PollModel:
         return decay
 
     def __filter(self):
-        data_filtered = self.data
+        data_filtered = self.values
         try:
-            data_filtered = self.data.loc[self.__date_from:self.__date_to]
+            data_filtered = self.values.loc[self.__date_from:self.__date_to]
         except KeyError:
             pass
         try:

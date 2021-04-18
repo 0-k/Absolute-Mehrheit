@@ -26,7 +26,7 @@ def __as_df(polls_by_party, dates):
 
 def aggregate(polls):
     poll_aggregation = PollModel()
-    poll_aggregation.data = polls
+    poll_aggregation.values = polls
     poll_aggregation.update_dates(pd.Timestamp(date.today()))
     return poll_aggregation.calc_current_average()
 
@@ -56,6 +56,7 @@ if __name__ == '__main__':
     drift = determine_drift()
     update_parties(polls, drift)
     simulation = simulate_elections()
+    print(simulation)
     plotting.plot_coalitions(simulation)
 
     # TODO: still to implement

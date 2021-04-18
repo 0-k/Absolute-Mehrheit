@@ -5,19 +5,19 @@ from config.config import config
 class Election:
 
     def __init__(self, result: np.array, drop_other_parties: bool = False):
-        self.result = result
+        self.__result = result
         if drop_other_parties:
             self.__drop_other_parties()
-        self.number_of_parties = len(self.result)
-        self.total_seats = config['total_seats']
+        self.__number_of_parties = len(self.__result)
+        self.__total_seats = config['total_seats']
         self.__enforce_five_percent_hurdle()
 
     def __drop_other_parties(self):
-        self.result = self.result[:-1]
+        self.__result = self.__result[:-1]
 
     def __enforce_five_percent_hurdle(self):
-        threshold_hurdle = self.result < config['threshold_hurdle']
-        self.result[threshold_hurdle] = 0
+        threshold_hurdle = self.__result < config['threshold_hurdle']
+        self.__result[threshold_hurdle] = 0
 
     def calc_seats_by_party(self):
         # Sainte-Laguë procedure
@@ -26,8 +26,8 @@ class Election:
         return seats
 
     def __calc_sainte_lague_quotients(self):
-        divisors = np.arange(0.5, self.total_seats)
-        sainte_lague_quotients = self.result / np.vstack(divisors)
+        divisors = np.arange(0.5, self.__total_seats)
+        sainte_lague_quotients = self.__result / np.vstack(divisors)
         return sainte_lague_quotients
 
     def __count_number_of_highest(self, quotients: np.array):
@@ -36,7 +36,7 @@ class Election:
         return seats
 
     def __filter_for_highest(self, quotients):
-        lowest_accepted_value = np.sort(quotients.flatten())[::-1][self.total_seats - 1]
+        lowest_accepted_value = np.sort(quotients.flatten())[::-1][self.__total_seats - 1]
         quotients[quotients < lowest_accepted_value] = 0
         return quotients
 
