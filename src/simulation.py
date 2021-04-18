@@ -47,5 +47,7 @@ class Simulation:
             seats[idx] = seats_by_party[party.idx]
         return np.count_nonzero(seats)/self.__sample_size
 
+
+
     def __repr__(self):
         return str(self.values)

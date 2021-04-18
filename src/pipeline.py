@@ -51,11 +51,25 @@ def simulate_elections():
 
 
 def evaluate_seats():
-    return [simulation.evaluate_seats_by(coalition) for coalition in coalitions.ALL]
+    names = [coalition.name for coalition in coalitions.ALL]
+    seats_by_coalition = [simulation.evaluate_seats_by(coalition) for coalition in coalitions.ALL]
+    return dict(zip(names, seats_by_coalition))
+
+
+def calc_coalition_correlation(seats_by_coalition):
+    df = pd.DataFrame(seats_by_coalition)
+    return df.corr()
 
 
 def evaluate_probability_hurdle_surpassing():
     return [simulation.evaluate_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
+
+
+def evaluate_if_majority(seats_by):
+    majority = dict()
+    for coalition in seats_by:
+        majority[coalition] = [-1. if item < 300 else 1. for item in seats_by[coalition]]
+    return majority
 
 
 if __name__ == '__main__':
@@ -65,9 +79,13 @@ if __name__ == '__main__':
     update_parties(polls, drift)
     simulation = simulate_elections()
     seats_by_coalition = evaluate_seats()
-    #plotting.plot_coalitions(seats_by_coalition)
+    has_majority = evaluate_if_majority(seats_by_coalition)
+    correlation = calc_coalition_correlation(seats_by_coalition)
     hurdles_surpassing_probability = evaluate_probability_hurdle_surpassing()
+
+    plotting.plot_coalitions(seats_by_coalition)
+    plotting.plot_correlation(correlation)
     print(hurdles_surpassing_probability)
-    #evaluation_coalition_correlation()
+
     #evaluate_coalition_without()
     #evaluate_coalition_with()
