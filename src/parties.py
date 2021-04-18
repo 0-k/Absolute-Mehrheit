@@ -25,3 +25,4 @@ LINKE = Party(name='LINKE', id='lin')
 AFD = Party(name='AFD', id='afd')
 OTHER = Party(name='OTHER', id='son')
 ALL = [UNION, SPD, GRUENE, FDP, LINKE, AFD, OTHER]
+CURRENT_PARLIAMENT = [UNION, SPD, GRUENE, FDP, LINKE, AFD]

@@ -9,7 +9,7 @@ from config.config import config
 
 class Simulation:
 
-    def __init__(self, parties: [Party], drop_other_parties: bool = False):
+    def __init__(self, parties: [Party], drop_other_parties: bool = True):
         self.values = None
         self.__parties = parties
         self.__sample_size = config['sample_size']

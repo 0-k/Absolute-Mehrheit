@@ -50,16 +50,24 @@ def simulate_elections():
     return Simulation(parties.ALL)
 
 
+def evaluate_seats():
+    return [simulation.evaluate_seats_by(coalition) for coalition in coalitions.ALL]
+
+
+def evaluate_probability_hurdle_surpassing():
+    return [simulation.evaluate_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
+
+
 if __name__ == '__main__':
     polling_results = load_polling_results()
     polls = aggregate(polling_results)
     drift = determine_drift()
     update_parties(polls, drift)
     simulation = simulate_elections()
-    print(simulation)
-    plotting.plot_coalitions(simulation)
-
-    # TODO: still to implement
-    #evaluate_five_percent_hurdle()
-    #make_plots()
+    seats_by_coalition = evaluate_seats()
+    #plotting.plot_coalitions(seats_by_coalition)
+    hurdles_surpassing_probability = evaluate_probability_hurdle_surpassing()
+    print(hurdles_surpassing_probability)
     #evaluation_coalition_correlation()
+    #evaluate_coalition_without()
+    #evaluate_coalition_with()
