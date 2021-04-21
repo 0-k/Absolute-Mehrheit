@@ -83,9 +83,8 @@ if __name__ == '__main__':
     correlation = calc_coalition_correlation(seats_by_coalition)
     hurdles_surpassing_probability = evaluate_probability_hurdle_surpassing()
 
-    print(has_majority)
-    #plotting.plot_coalitions(seats_by_coalition)
-    #plotting.plot_correlation(correlation)
+    plotting.plot_coalitions(seats_by_coalition)
+    plotting.plot_correlation(correlation)
     print(hurdles_surpassing_probability)
 
     #evaluate_coalition_without()
