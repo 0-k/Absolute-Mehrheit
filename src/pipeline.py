@@ -62,20 +62,23 @@ def calc_coalition_correlation(seats_by_coalition):
     return df.corr()
 
 
-def calc_probability_hurdle_surpassing():
+def calc_probability_hurdle_surpassing() -> dict:
     party_names = [party.name for party in parties.CURRENT_PARLIAMENT]
     probability_hurdle_surpassing = [simulation.calc_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
     return dict(zip(party_names, probability_hurdle_surpassing))
 
 
-def calc_has_majority_by_coalition():
+def calc_has_majority_by_coalition() -> pd.DataFrame:
     majority = dict()
     for coalition in seats_by_coalition:
         majority[coalition] = [0 if item < config['majority'] else 1 for item in seats_by_coalition[coalition]]
     return pd.DataFrame(majority)
 
+def calc_share_of_majority_by_coalition() -> dict:
+    return dict(has_majority_by_coalition.sum()/config['sample_size'])
 
-def calc_share_of_any_majority_by_party():
+
+def calc_share_with_any_majority_by_party() -> dict:
     with_any_majority = dict()
     for party in parties.ALL:
         coalition_with_party = [coalition.name if (party in coalition) else None for coalition in coalitions.ALL]
@@ -86,22 +89,36 @@ def calc_share_of_any_majority_by_party():
     return with_any_majority
 
 
+def calc_share_with_no_majority() -> float:
+    with_no_majority = 1 - has_majority_by_coalition.any(axis=1).sum() / config['sample_size']
+    return float(with_no_majority)
+
+
 if __name__ == '__main__':
     polling_results = load_polling_results()
     polls = aggregate(polling_results)
     drift = determine_drift()
     update_parties(polls, drift)
-
-    print('simulation starts')
     simulation = simulate_elections()
     seats_by_coalition = calc_seats_by_coalition()
     has_majority_by_coalition = calc_has_majority_by_coalition()
-    share_of_any_majority_by_party = calc_share_of_any_majority_by_party()
-    print(share_of_any_majority_by_party)
-    coalition_correlation = calc_coalition_correlation(seats_by_coalition)
-    probability_hurdle_surpassing = calc_probability_hurdle_surpassing()
 
-    #plotting.plot_coalitions(seats_by_coalition)
-    #plotting.plot_correlation(coalition_correlation)
+    share_of_majority_by_coalition = calc_share_of_majority_by_coalition()
+    print(share_of_majority_by_coalition)
+
+    share_with_any_majority_by_party = calc_share_with_any_majority_by_party()
+    print(share_with_any_majority_by_party)
+
+    share_with_no_majority = calc_share_with_no_majority()
+    print(share_with_no_majority)
+
+    probability_hurdle_surpassing = calc_probability_hurdle_surpassing()
     print(probability_hurdle_surpassing)
+
+    coalition_correlation = calc_coalition_correlation(seats_by_coalition)
+
+    plotting.plot_seats_by_coalitions(seats_by_coalition)
+    plotting.plot_coalition_correlation(coalition_correlation)
+
+
 

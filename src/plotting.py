@@ -8,7 +8,7 @@ import parties
 import coalitions
 
 
-def plot_coalitions(seats_by_coalition):
+def plot_seats_by_coalitions(seats_by_coalition):
     rows = 2
     columns = int(math.ceil(len(coalitions.ALL) / rows))
     fig, axs = plt.subplots(rows, columns)
@@ -23,12 +23,12 @@ def plot_coalitions(seats_by_coalition):
     plt.show()
 
 
-def plot_correlation(corr):
+def plot_coalition_correlation(corr):
     sns.heatmap(corr, annot=True)
     plt.show()
 
 
 if __name__ == '__main__':
     sim = Simulation(parties.ALL)
-    plot_coalitions(sim)
+    plot_seats_by_coalitions(sim)
 
