@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from datetime import date
 
 from config.config import config
@@ -50,9 +51,9 @@ def simulate_elections():
     return Simulation(parties.ALL)
 
 
-def evaluate_seats():
+def calc_seats_by_coalition():
     names = [coalition.name for coalition in coalitions.ALL]
-    seats_by_coalition = [simulation.evaluate_seats_by(coalition) for coalition in coalitions.ALL]
+    seats_by_coalition = [simulation.calc_seats_by(coalition) for coalition in coalitions.ALL]
     return dict(zip(names, seats_by_coalition))
 
 
@@ -61,15 +62,28 @@ def calc_coalition_correlation(seats_by_coalition):
     return df.corr()
 
 
-def evaluate_probability_hurdle_surpassing():
-    return [simulation.evaluate_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
+def calc_probability_hurdle_surpassing():
+    party_names = [party.name for party in parties.CURRENT_PARLIAMENT]
+    probability_hurdle_surpassing = [simulation.calc_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
+    return dict(zip(party_names, probability_hurdle_surpassing))
 
 
-def evaluate_if_majority(seats_by):
+def calc_has_majority_by_coalition():
     majority = dict()
-    for coalition in seats_by:
-        majority[coalition] = [0 if item < config['majority'] else 1 for item in seats_by[coalition]]
-    return majority
+    for coalition in seats_by_coalition:
+        majority[coalition] = [0 if item < config['majority'] else 1 for item in seats_by_coalition[coalition]]
+    return pd.DataFrame(majority)
+
+
+def calc_share_of_any_majority_by_party():
+    with_any_majority = dict()
+    for party in parties.ALL:
+        coalition_with_party = [coalition.name if (party in coalition) else None for coalition in coalitions.ALL]
+        while None in coalition_with_party:
+            coalition_with_party.remove(None)
+        party_with_any_majority = has_majority_by_coalition[coalition_with_party]
+        with_any_majority[party.name] = party_with_any_majority.any(axis=1).sum() / config['sample_size']
+    return with_any_majority
 
 
 if __name__ == '__main__':
@@ -77,15 +91,17 @@ if __name__ == '__main__':
     polls = aggregate(polling_results)
     drift = determine_drift()
     update_parties(polls, drift)
+
+    print('simulation starts')
     simulation = simulate_elections()
-    seats_by_coalition = evaluate_seats()
-    has_majority = evaluate_if_majority(seats_by_coalition)
-    correlation = calc_coalition_correlation(seats_by_coalition)
-    hurdles_surpassing_probability = evaluate_probability_hurdle_surpassing()
+    seats_by_coalition = calc_seats_by_coalition()
+    has_majority_by_coalition = calc_has_majority_by_coalition()
+    share_of_any_majority_by_party = calc_share_of_any_majority_by_party()
+    print(share_of_any_majority_by_party)
+    coalition_correlation = calc_coalition_correlation(seats_by_coalition)
+    probability_hurdle_surpassing = calc_probability_hurdle_surpassing()
 
-    plotting.plot_coalitions(seats_by_coalition)
-    plotting.plot_correlation(correlation)
-    print(hurdles_surpassing_probability)
+    #plotting.plot_coalitions(seats_by_coalition)
+    #plotting.plot_correlation(coalition_correlation)
+    print(probability_hurdle_surpassing)
 
-    #evaluate_coalition_without()
-    #evaluate_coalition_with()

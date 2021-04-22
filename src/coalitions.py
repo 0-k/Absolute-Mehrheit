@@ -26,7 +26,7 @@ GREEN_RED_RED = Coalition('GREEN_RED_RED', [parties.GRUENE, parties.SPD, parties
 GREEN_RED_YELLOW = Coalition('GREEN_RED_YELLOW', [parties.GRUENE, parties.SPD, parties.FDP])
 BLACK_YELLOW = Coalition('BLACK_YELLOW', [parties.UNION, parties.FDP])
 BLACK_GREEN_YELLOW = Coalition('BLACK_GREEN_YELLOW', [parties.UNION, parties.GRUENE, parties.FDP])
-ALL = [BLACK_GREEN, BLACK_RED, BLACK_YELLOW, BLACK_GREEN_YELLOW, GREEN_RED_RED, GREEN_RED_YELLOW]
+ALL = [BLACK_GREEN, BLACK_RED, BLACK_YELLOW, GREEN_RED_RED, GREEN_RED_YELLOW]
 
 if __name__ == '__main__':
     for coalition in ALL:

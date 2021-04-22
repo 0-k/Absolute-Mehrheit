@@ -28,7 +28,7 @@ class Simulation:
         samples /= total_result
         self.values = samples
 
-    def evaluate_seats_by(self, coalition: Coalition):
+    def calc_seats_by(self, coalition: Coalition):
         coalition_seats = np.zeros(self.__sample_size)
         for idx in range(self.__sample_size):
             election_result = self.values.T[idx]
@@ -38,7 +38,7 @@ class Simulation:
                 coalition_seats[idx] += seats_by_party[party.idx]
         return coalition_seats
 
-    def evaluate_probability_hurdle_surpassing(self, party):
+    def calc_probability_hurdle_surpassing(self, party):
         seats = np.zeros(self.__sample_size)
         for idx in range(self.__sample_size):
             election_result = self.values.T[idx]
