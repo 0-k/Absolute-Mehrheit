@@ -94,6 +94,12 @@ def calc_share_with_no_majority() -> float:
     return float(with_no_majority)
 
 
+def calc_dependent_majority(while_majority_of_coalition: coalitions.Coalition,
+                            dependent_coalition: coalitions.Coalition) -> float:
+    dependent_majority = has_majority_by_coalition[has_majority_by_coalition[while_majority_of_coalition.name] == 1]
+    return dependent_majority[dependent_coalition.name].sum()/config['sample_size']
+
+
 if __name__ == '__main__':
     polling_results = load_polling_results()
     polls = aggregate(polling_results)
@@ -102,6 +108,9 @@ if __name__ == '__main__':
     simulation = simulate_elections()
     seats_by_coalition = calc_seats_by_coalition()
     has_majority_by_coalition = calc_has_majority_by_coalition()
+
+    dependent_majority = calc_dependent_majority(coalitions.BLACK_GREEN, coalitions.GREEN_RED_RED)
+    print(dependent_majority)
 
     share_of_majority_by_coalition = calc_share_of_majority_by_coalition()
     print(share_of_majority_by_coalition)
@@ -116,7 +125,7 @@ if __name__ == '__main__':
     print(probability_hurdle_surpassing)
 
     coalition_correlation = calc_coalition_correlation(seats_by_coalition)
-
+    
     plotting.plot_seats_by_coalitions(seats_by_coalition)
     plotting.plot_coalition_correlation(coalition_correlation)
 
