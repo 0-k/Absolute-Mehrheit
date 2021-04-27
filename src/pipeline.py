@@ -97,8 +97,25 @@ def calc_share_with_no_majority() -> float:
 def calc_dependent_majority(while_majority_of_coalition: coalitions.Coalition,
                             dependent_coalition: coalitions.Coalition) -> float:
     dependent_majority = has_majority_by_coalition[has_majority_by_coalition[while_majority_of_coalition.name] == 1]
-    return dependent_majority[dependent_coalition.name].sum()/config['sample_size']
+    if dependent_majority[while_majority_of_coalition.name].sum() == 0:
+        return np.nan
+    return dependent_majority[dependent_coalition.name].sum()/dependent_majority[while_majority_of_coalition.name].sum()
 
+
+def calc_dependent_majority_matrix() -> pd.DataFrame:
+    number_of_coalitions = len(coalitions.ALL)
+    majority_matrix = np.zeros((number_of_coalitions, number_of_coalitions))
+    idx_x = 0
+    idx_y = 0
+    for majority_coalition in coalitions.ALL:
+        for dependent_coalition in coalitions.ALL:
+            majority_matrix[idx_x][idx_y] = calc_dependent_majority(majority_coalition, dependent_coalition)
+            idx_y += 1
+        idx_x += 1
+        idx_y = 0
+    party_names = [coalition.name for coalition in coalitions.ALL]
+    majority_matrix_as_df = pd.DataFrame(majority_matrix, columns=party_names, index=party_names)
+    return majority_matrix_as_df
 
 if __name__ == '__main__':
     polling_results = load_polling_results()
@@ -111,6 +128,8 @@ if __name__ == '__main__':
 
     dependent_majority = calc_dependent_majority(coalitions.BLACK_GREEN, coalitions.GREEN_RED_RED)
     print(dependent_majority)
+
+    dependent_majority_matrix = calc_dependent_majority_matrix()
 
     share_of_majority_by_coalition = calc_share_of_majority_by_coalition()
     print(share_of_majority_by_coalition)
@@ -127,7 +146,8 @@ if __name__ == '__main__':
     coalition_correlation = calc_coalition_correlation(seats_by_coalition)
     
     plotting.plot_seats_by_coalitions(seats_by_coalition)
-    plotting.plot_coalition_correlation(coalition_correlation)
+    plotting.plot_correlation(dependent_majority_matrix)
+    plotting.plot_correlation(coalition_correlation)
 
 
 

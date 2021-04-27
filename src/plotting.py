@@ -23,7 +23,7 @@ def plot_seats_by_coalitions(seats_by_coalition):
     plt.show()
 
 
-def plot_coalition_correlation(corr):
+def plot_correlation(corr):
     sns.heatmap(corr, annot=True)
     plt.show()
 
