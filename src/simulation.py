@@ -1,10 +1,10 @@
 import numpy as np
 import math
 
+from config.config import config
 from election import Election
 from parties import Party
 from coalitions import Coalition
-from config.config import config
 
 
 class Simulation:
@@ -46,8 +46,6 @@ class Simulation:
             seats_by_party = election.calc_seats_by_party()
             seats[idx] = seats_by_party[party.idx]
         return np.count_nonzero(seats)/self.__sample_size
-
-
 
     def __repr__(self):
         return str(self.values)

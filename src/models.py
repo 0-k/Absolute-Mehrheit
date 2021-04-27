@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-from parties import Party, UNION
 from config.config import config
 from dat.historic_poll_data import historic_poll_data
+from parties import Party, UNION
 
 
 class DriftModel:
@@ -73,6 +73,3 @@ if __name__ == '__main__':
     poll_model = PollModel()
     print(drift_model.calc_drift(UNION))
     print(poll_model.calc_current_average())
-
-
-

@@ -31,4 +31,3 @@ def plot_correlation(corr):
 if __name__ == '__main__':
     sim = Simulation(parties.ALL)
     plot_seats_by_coalitions(sim)
-

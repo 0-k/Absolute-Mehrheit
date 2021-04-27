@@ -1,4 +1,5 @@
 import numpy as np
+
 from config.config import config
 
 
@@ -39,5 +40,3 @@ class Election:
         lowest_accepted_value = np.sort(quotients.flatten())[::-1][self.__total_seats - 1]
         quotients[quotients < lowest_accepted_value] = 0
         return quotients
-
-

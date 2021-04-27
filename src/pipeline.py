@@ -5,10 +5,10 @@ from datetime import date
 from config.config import config
 from dat.loader import Loader
 from simulation import Simulation
+from models import DriftModel, PollModel
 import parties
 import coalitions
 import plotting
-from src.models import DriftModel, PollModel
 
 
 def load_polling_results():
@@ -53,8 +53,8 @@ def simulate_elections():
 
 def calc_seats_by_coalition():
     names = [coalition.name for coalition in coalitions.ALL]
-    seats_by_coalition = [simulation.calc_seats_by(coalition) for coalition in coalitions.ALL]
-    return dict(zip(names, seats_by_coalition))
+    seats = [simulation.calc_seats_by(coalition) for coalition in coalitions.ALL]
+    return dict(zip(names, seats))
 
 
 def calc_coalition_correlation(seats_by_coalition):
@@ -64,8 +64,8 @@ def calc_coalition_correlation(seats_by_coalition):
 
 def calc_probability_hurdle_surpassing() -> dict:
     party_names = [party.name for party in parties.CURRENT_PARLIAMENT]
-    probability_hurdle_surpassing = [simulation.calc_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
-    return dict(zip(party_names, probability_hurdle_surpassing))
+    probability = [simulation.calc_probability_hurdle_surpassing(party) for party in parties.CURRENT_PARLIAMENT]
+    return dict(zip(party_names, probability))
 
 
 def calc_has_majority_by_coalition() -> pd.DataFrame:
@@ -73,6 +73,7 @@ def calc_has_majority_by_coalition() -> pd.DataFrame:
     for coalition in seats_by_coalition:
         majority[coalition] = [0 if item < config['majority'] else 1 for item in seats_by_coalition[coalition]]
     return pd.DataFrame(majority)
+
 
 def calc_share_of_majority_by_coalition() -> dict:
     return dict(has_majority_by_coalition.sum()/config['sample_size'])
@@ -117,6 +118,7 @@ def calc_dependent_majority_matrix() -> pd.DataFrame:
     majority_matrix_as_df = pd.DataFrame(majority_matrix, columns=party_names, index=party_names)
     return majority_matrix_as_df
 
+
 if __name__ == '__main__':
     polling_results = load_polling_results()
     polls = aggregate(polling_results)
@@ -148,6 +150,3 @@ if __name__ == '__main__':
     plotting.plot_seats_by_coalitions(seats_by_coalition)
     plotting.plot_correlation(dependent_majority_matrix)
     plotting.plot_correlation(coalition_correlation)
-
-
-

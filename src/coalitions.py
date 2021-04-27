@@ -19,7 +19,6 @@ class Coalition:
             return False
 
 
-
 BLACK_GREEN = Coalition('BLACK_GREEN', [parties.UNION, parties.GRUENE])
 BLACK_RED = Coalition('BLACK_RED', [parties.UNION, parties.SPD])
 GREEN_RED_RED = Coalition('GREEN_RED_RED', [parties.GRUENE, parties.SPD, parties.LINKE])
